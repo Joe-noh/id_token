@@ -21,9 +21,7 @@ defmodule IDToken do
   end
 
   defp get_cert_from_store(module) do
-    IDToken.CertificateStore.get(module, fn ->
-      module.fetch_certificates()
-    end)
+    IDToken.CertificateStore.get(module, fn -> module.fetch_certificates() end)
   end
 
   defp decode_jwt(token) do

@@ -1,15 +1,15 @@
 defmodule IDTokenTest do
   use ExUnit.Case
-  doctest IDToken
+  import Mock
 
   describe "verify/2" do
     test "returns ok tuple" do
-      token = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImQ2YzM5Mzc4YWVmYzA2YzQyYTJlODI1OTA0ZWNlZDMwODg2YTk5MjIiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoi6aKo5YyW44GV44Gb44Gq44GEYm90IiwicGljdHVyZSI6Imh0dHBzOi8vcGJzLnR3aW1nLmNvbS9wcm9maWxlX2ltYWdlcy85ODY1Nzk1OTY2OTM3OTQ4MTYvQVZyVGd2MWhfbm9ybWFsLmpwZyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9tYWgtZGV2ZWxvcG1lbnQiLCJhdWQiOiJtYWgtZGV2ZWxvcG1lbnQiLCJhdXRoX3RpbWUiOjE1NzA4Nzc5MjgsInVzZXJfaWQiOiJIRHNvQ21pTlVyUXpDNk14dHBhbGpFTERGUXYxIiwic3ViIjoiSERzb0NtaU5VclF6QzZNeHRwYWxqRUxERlF2MSIsImlhdCI6MTU3MDg3NzkzMCwiZXhwIjoxNTcwODgxNTMwLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7InR3aXR0ZXIuY29tIjpbIjI3NTQ3MjE3MyJdfSwic2lnbl9pbl9wcm92aWRlciI6InR3aXR0ZXIuY29tIn19.P1_eZX8Gx7mOx8Ka-Ob8YRfPe85rWkb6SPuhHt2a2c6keoWW5hiHQPSCA7NwiXQqB5njGqb25e1Vn9o_5x9XpZh4NYpVjE4NvKB39S5rWL1qFe03G0vZHs7XhBiGkyfbW0HPNaHPeC2Sz1waA-ZkQcRWTSyJlcq-OrQom0KDZ7250bX2PMPS9kZwlGOpjzKxKp3jc2W3Ryxr-19yyW20PDDCIPykd3So8eEXjWkVrqkCrga1azZozRK7FTbZLosOIXnbUu4ELelFNcWMsdw9HJdSzz1DGSX6HSiLZKP434eTKamevn0DyeJW_3uE3yKN4lq3boPe6xrPaYearia_TQ"
+      token = Fixtures.GoogleCerts.token()
+      response = Fixtures.GoogleCerts.response()
 
-      IDToken.verify(token, module: IDToken.Firebase) |> IO.inspect
-      IDToken.verify(token, module: IDToken.Firebase) |> IO.inspect
-      IDToken.verify(token, module: IDToken.Firebase) |> IO.inspect
-      IDToken.verify(token, module: IDToken.Firebase) |> IO.inspect
+      Mock.with_mock Mojito, [request: fn (_, _) -> {:ok, response} end] do
+        {:ok, payload} = IDToken.verify(token, module: IDToken.Firebase)
+      end
     end
   end
 end
