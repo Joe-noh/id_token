@@ -4,8 +4,8 @@ defmodule IDToken do
   """
 
   @type opts :: [
-    module: module()
-  ]
+          module: module()
+        ]
 
   @spec verify(token :: String.t(), opts :: opts()) :: {:ok, map()} | {:error, term()}
   def verify(token, module: module) do
@@ -27,7 +27,7 @@ defmodule IDToken do
   defp decode_jwt(token) do
     String.split(token, ".")
     |> Enum.take(2)
-    |> Enum.map(& Base.decode64!(&1, padding: false))
-    |> Enum.map(& Jason.decode!(&1))
+    |> Enum.map(&Base.decode64!(&1, padding: false))
+    |> Enum.map(&Jason.decode!(&1))
   end
 end

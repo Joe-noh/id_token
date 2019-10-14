@@ -7,7 +7,7 @@ defmodule IDTokenTest do
       token = Fixtures.GoogleCerts.token()
       response = Fixtures.GoogleCerts.response()
 
-      Mock.with_mock Mojito, [request: fn (_, _) -> {:ok, response} end] do
+      Mock.with_mock Mojito, request: fn _, _ -> {:ok, response} end do
         {:ok, payload} = IDToken.verify(token, module: IDToken.Firebase)
       end
     end
