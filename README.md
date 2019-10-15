@@ -17,7 +17,8 @@ IDToken.verify(jwt, module: IDToken.Firebase)
 #=> {:ok, payload}
 ```
 
-More on docs: [https://hexdocs.pm/id_token](https://hexdocs.pm/id_token)
+More on [https://hexdocs.pm/id_token](https://hexdocs.pm/id_token).
+See `IDToken.Firebase` if you implement custom callback module.
 
 ### Note
 

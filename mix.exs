@@ -8,7 +8,8 @@ defmodule IDToken.MixProject do
       elixir: "~> 1.9",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      source_url: "https://github.com/Joe-noh/id_token"
     ]
   end
 
@@ -24,7 +25,8 @@ defmodule IDToken.MixProject do
       {:joken, "~> 2.1"},
       {:jason, "~> 1.1"},
       {:mojito, "~> 0.5"},
-      {:mock, "~> 0.3", only: :test}
+      {:mock, "~> 0.3", only: :test},
+      {:ex_doc, "~> 0.21", only: :dev, runtime: false}
     ]
   end
 end
