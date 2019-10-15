@@ -22,8 +22,11 @@ defmodule IDToken.CertificateStoreTest do
     assert nil == CertificateStore.get(key)
   end
 
-  test "put and return new value if missing", %{test: key, unexpired_cert: unexpired} do
-    assert unexpired == CertificateStore.get(key, fn -> unexpired end)
-    assert unexpired == CertificateStore.get(key)
+  test  "erase from store", %{test: key, unexpired_cert: cert} do
+    assert :ok == CertificateStore.put(key, cert)
+
+    CertificateStore.erase(key)
+
+    assert nil == CertificateStore.get(key)
   end
 end

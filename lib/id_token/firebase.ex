@@ -11,7 +11,10 @@ defmodule IDToken.Firebase do
          {:ok, %Mojito.Response{body: body, headers: headers}} <- Mojito.request(:get, url),
          {:ok, keys} <- Jason.decode(body),
          {:ok, expires_at} <- expires_at(headers) do
-      %IDToken.Certificate{body: keys, expires_at: expires_at}
+      {:ok, %IDToken.Certificate{body: keys, expires_at: expires_at}}
+    else
+      tuple = {:error, _} -> tuple
+      reason -> {:error, reason}
     end
   end
 

@@ -9,14 +9,9 @@ defmodule IDToken.CertificateStore do
     :persistent_term.get({__MODULE__, key}, nil) |> check_expired()
   end
 
-  def get(key, missing_fn) do
-    case get(key) do
-      nil ->
-        put(key, missing_fn.())
-        get(key)
-
-      something ->
-        something
+  def erase(key) do
+    if get(key) != nil do
+      :persistent_term.erase({__MODULE__, key})
     end
   end
 

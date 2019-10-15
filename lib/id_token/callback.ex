@@ -2,8 +2,8 @@ defmodule IDToken.Callback do
   @doc """
   Callback function for fetching public key certificates.
 
-  Must return a `IDToken.Certificate` struct and this will be cached for
-  later use.
+  Must return a {:ok, `%IDToken.Certificate{}`} tuple and this will be cached
+  for later use.
   """
   @callback fetch_certificates() :: IDToken.Certificate.t()
 

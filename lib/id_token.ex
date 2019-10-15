@@ -11,17 +11,15 @@ defmodule IDToken do
   def verify(token, module: module) do
     [headers = %{"alg" => alg}, _payload] = decode_jwt(token)
 
-    key =
-      module
-      |> get_cert_from_store()
-      |> module.verification_key(headers)
+    case fetch_cert(module) do
+      {:ok, cert} ->
+        key = module.verification_key(cert, headers)
+        signer = Joken.Signer.create(alg, %{"pem" => key})
+        Joken.verify(token, signer)
 
-    signer = Joken.Signer.create(alg, %{"pem" => key})
-    Joken.verify(token, signer)
-  end
-
-  defp get_cert_from_store(module) do
-    IDToken.CertificateStore.get(module, fn -> module.fetch_certificates() end)
+      error = {:error, _} ->
+        error
+    end
   end
 
   defp decode_jwt(token) do
@@ -29,5 +27,19 @@ defmodule IDToken do
     |> Enum.take(2)
     |> Enum.map(&Base.decode64!(&1, padding: false))
     |> Enum.map(&Jason.decode!(&1))
+  end
+
+  defp fetch_cert(module) do
+    case IDToken.CertificateStore.get(module) do
+      nil -> fetch_then_store_cert(module)
+      cert -> {:ok, cert}
+    end
+  end
+
+  defp fetch_then_store_cert(module) do
+    with {:ok, cert} <- module.fetch_certificates() do
+      IDToken.CertificateStore.put(module, cert)
+      {:ok, cert}
+    end
   end
 end
