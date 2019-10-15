@@ -1,4 +1,6 @@
 defmodule IDToken.CertificateStore do
+  @moduledoc false
+
   alias IDToken.Certificate
 
   def put(key, cert = %Certificate{}) do

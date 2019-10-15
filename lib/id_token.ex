@@ -1,6 +1,13 @@
 defmodule IDToken do
   @moduledoc """
   Entry point module for using this package.
+
+  `verify/2` verifies JWT and returns claims.
+
+      iex> IDToken.verify(token, module: IDToken.Firebase)
+      {:ok, %{"aud" => "...", ... }}
+
+  Callback module have to behave as `IDToken.Callback`.
   """
 
   @type opts :: [
