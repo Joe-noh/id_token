@@ -16,24 +16,15 @@ defmodule IDToken do
 
   @spec verify(token :: String.t(), opts :: opts()) :: {:ok, map()} | {:error, term()}
   def verify(token, module: module) do
-    [headers = %{"alg" => alg}, _payload] = decode_jwt(token)
-
-    case fetch_cert(module) do
-      {:ok, cert} ->
-        key = module.verification_key(cert, headers)
-        signer = Joken.Signer.create(alg, %{"pem" => key})
-        Joken.verify(token, signer)
-
-      error = {:error, _} ->
-        error
+    with {:ok, headers = %{"alg" => alg}} <- Joken.peek_header(token),
+         {:ok, cert} <- fetch_cert(module) do
+      key = module.verification_key(cert, headers)
+      signer = Joken.Signer.create(alg, %{"pem" => key})
+      Joken.verify(token, signer)
+    else
+      :error -> {:error, "invalid token #{token}"}
+      error = {:error, _} -> error
     end
-  end
-
-  defp decode_jwt(token) do
-    String.split(token, ".")
-    |> Enum.take(2)
-    |> Enum.map(&Base.decode64!(&1, padding: false))
-    |> Enum.map(&Jason.decode!(&1))
   end
 
   defp fetch_cert(module) do
