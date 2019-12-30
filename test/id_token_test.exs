@@ -25,5 +25,10 @@ defmodule IDTokenTest do
         assert {:error, :something_went_wrong} == IDToken.verify(token, module: IDToken.Firebase)
       end
     end
+
+    test "returns error instead of raise even if token is badly invalid" do
+      assert {:error, _} = IDToken.verify("", module: IDToken.Firebase)
+      assert {:error, _} = IDToken.verify("a.b.c", module: IDToken.Firebase)
+    end
   end
 end
