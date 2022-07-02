@@ -30,7 +30,6 @@ defmodule IDToken.MixProject do
       {:finch, "~> 0.12"},
       {:joken, "~> 2.1"},
       {:jason, "~> 1.1"},
-      {:mojito, "~> 0.5"},
       {:mock, "~> 0.3", only: :test},
       {:ex_doc, "~> 0.21", only: :dev, runtime: false}
     ]
