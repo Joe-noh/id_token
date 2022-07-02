@@ -16,7 +16,10 @@ defmodule IDToken.MixProject do
   end
 
   def application do
-    [extra_applications: []]
+    [
+      mod: {IdToken.Application, []},
+      extra_applications: []
+    ]
   end
 
   def elixirc_paths(:test), do: ["lib", "test/fixtures"]
@@ -24,6 +27,7 @@ defmodule IDToken.MixProject do
 
   defp deps do
     [
+      {:finch, "~> 0.12"},
       {:joken, "~> 2.1"},
       {:jason, "~> 1.1"},
       {:mojito, "~> 0.5"},
