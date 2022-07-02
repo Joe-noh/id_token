@@ -8,7 +8,7 @@ defmodule IDToken.Firebase do
   @impl true
   def fetch_certificates do
     with url = "https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com",
-         {:ok, %Mojito.Response{body: body, headers: headers}} <- Mojito.request(:get, url),
+         {:ok, %Finch.Response{body: body, headers: headers}} <- get_request(url),
          {:ok, keys} <- Jason.decode(body),
          {:ok, expires_at} <- expires_at(headers) do
       {:ok, %IDToken.Certificate{body: keys, expires_at: expires_at}}
@@ -21,6 +21,10 @@ defmodule IDToken.Firebase do
   @impl true
   def verification_key(%IDToken.Certificate{body: body}, %{"kid" => kid}) do
     Map.get(body, kid)
+  end
+
+  defp get_request(url) do
+    Finch.build(:get, url) |> Finch.request(IdToken.Finch)
   end
 
   defp expires_at([{"cache-control", cache_control} | _]) do
