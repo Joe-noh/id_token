@@ -4,7 +4,7 @@ defmodule IDToken.MixProject do
   def project do
     [
       app: :id_token,
-      version: "0.2.0",
+      version: "0.2.1",
       description: "ID Token JWT Verifier",
       elixir: "~> 1.9",
       elixirc_paths: elixirc_paths(Mix.env()),

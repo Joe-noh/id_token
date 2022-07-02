@@ -5,7 +5,7 @@
 ```elixir
 def deps do
   [
-    {:id_token, "~> 0.1"}
+    {:id_token, "~> 0.2"}
   ]
 end
 ```
